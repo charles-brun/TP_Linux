@@ -471,7 +471,7 @@ sudo mkdir /var/www/tp2_nextcloud/
 - assurez-vous que le dossier `/var/www/tp2_nextcloud/` et tout son contenu appartient à l'utilisateur qui exécute le service Apache
 
 ```
-sudo chown apache:apache -r /var/www/tp2_nextcloud/
+sudo chown apache:apache -R /var/www/tp2_nextcloud/
 ls -la /var/www/tp2_nextcloud/nextcloud/
 ```
 
@@ -527,5 +527,16 @@ sudo vim /etc/httpd/conf.d/apache.conf
 🌞 **Exploration de la base de données**
 
 - connectez vous en ligne de commande à la base de données après l'installation terminée
+
+```
+SHOW DATABASES;
+USE nextcloud;
+SHOW TABLES;
+```
+
 - déterminer combien de tables ont été crées par NextCloud lors de la finalisation de l'installation
   - ***bonus points*** si la réponse à cette question est automatiquement donnée par une requête SQL
+
+```
+124 rows in set (0.001 sec)
+```
