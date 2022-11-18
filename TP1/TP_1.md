@@ -47,9 +47,9 @@ Au menu :
   - les machines doivent posséder une IP statique sur l'interface host-only
 
 ```
-sudo vim /etc/sysconfing/network-scripts/ifcfg-enp0s8
+sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s8
 
-    NAME=enps0s8
+    NAME=enp0s8
     DEVICE=enp0s8
 
     BOOTPROTO=static
