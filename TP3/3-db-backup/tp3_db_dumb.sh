@@ -54,3 +54,16 @@ else
     echo "Erreur lors de la création du fichier de sauvegarde."
     exit 2
 fi
+
+#compression du fichier .sql
+$_zip -j /srv/db_dumps/$savename.zip /srv/db_dumps/$savename.sql
+
+if [ $? -eq 0 ]
+then
+    echo "Fichier de sauvegarde compressé."
+    #suppression du fichier .sql
+    rm /srv/db_dumps/$savename.sql
+else
+    echo "Erreur lors de la compression."
+    exit 3
+fi

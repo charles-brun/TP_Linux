@@ -38,6 +38,8 @@ sudo mysql -u db_dumps -p
 
 ➜ **Ecrire le script `bash`**
 
+![Script](./tp3_db_dumb.sh)
+
 - il s'appellera `tp3_db_dump.sh`
 - il devra être stocké dans le dossier `/srv` sur la machine `db.tp2.linux`
 - le script doit commencer par un *shebang* qui indique le chemin du programme qui exécutera le contenu du script
@@ -181,15 +183,18 @@ $ sudo systemctl start db-dump
 - ainsi votre fichier s'appellera `db-dump.timer`
 - la syntaxe est la suivante :
 
-```systemd
-[Unit]
-Description=Run service X
+```
 
-[Timer]
-OnCalendar=*-*-* 4:00:00
+sudo vim /etc/systemd/system/db-dump.timer
 
-[Install]
-WantedBy=timers.target
+    [Unit]
+    Description=Run db-dump.service every 4 hours
+
+    [Timer]
+    OnCalendar=*-*-* 4:00:00
+
+    [Install]
+    WantedBy=timers.target
 ```
 
 > [La doc Arch est cool à ce sujet.](https://wiki.archlinux.org/title/systemd/Timers)
@@ -212,4 +217,40 @@ $ sudo systemctl list-timers
 
 ➜ **Tester la restauration des données** sinon ça sert à rien :)
 
+modif bdd :
+
+```
+sudo mysql -u root -p
+
+MariaDB [(none)]> use nextcloud;
+MariaDB [nextcloud]> create table hello (toto INT);
+
+MariaDB [nextcloud]> show tables;
++-----------------------------+
+| Tables_in_nextcloud         |
++-----------------------------+
+| hello                       |
+| oc_accounts                 |
+...
+```
+
 - livrez-moi la suite de commande que vous utiliseriez pour restaurer les données dans une version antérieure
+
+```
+sudo unzip -d /srv/db_dumps/ /srv/db_dumps/db_nextcloud_20221122223110.zip
+sudo mysql -u root -p nextcloud < /srv/db_dumps/db_nextcloud_20221122223110.sql
+```
+
+vérif
+
+```
+sudo mysql -u root -p
+
+MariaDB [(none)]> use nextcloud;
+MariaDB [nextcloud]> show tables;
++-----------------------------+
+| Tables_in_nextcloud         |
++-----------------------------+
+| oc_accounts                 |
+...
+```
