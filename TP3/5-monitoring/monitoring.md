@@ -36,7 +36,7 @@ Utilisez votre navigateur pour visiter l'interface web de Netdata `http://<IP_VM
 ➜ **Configurer Netdata pour qu'il vous envoie des alertes** dans [un salon Discord](https://learn.netdata.cloud/docs/agent/health/notifications/discord) dédié en cas de soucis
 
 ```
-vim /etc/netdata/health_alarm_notify.conf
+vim /etc/netdata/health.d/health_alarm_notify.conf
 
         ###############################################################################
         # sending discord notifications
@@ -55,6 +55,9 @@ vim /etc/netdata/health_alarm_notify.conf
         # this discord channel (empty = do not send a notification for unconfigured
         # roles):
         DEFAULT_RECIPIENT_DISCORD="alarms"
+
+sudo systemctl restart netdata
+
 ```
 
 ➜ **Vérifier que les alertes fonctionnent** en surchargeant volontairement la machine par exemple (effectuez des *stress tests* de RAM et CPU, ou remplissez le disque volontairement par exemple)
@@ -64,4 +67,4 @@ sudo dnf install stress-ng
 stress-ng --cpu 4
 ```
 
-![Monitoring](../pics/monit.jpg)
+![Alerte CPU](alert.png)
