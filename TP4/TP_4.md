@@ -262,7 +262,25 @@ $ curl <IP_VM>:8888
   - installation de Apache (pour les systèmes debian, le serveur Web apache s'appelle `apache2` et non pas `httpd` comme sur Rocky)
   - page d'accueil Apache HTML personnalisée
 
-➜ Pour vous aider, voilà un fichier de conf minimal pour Apache (à positionner dans `/etc/apache2/apache2.conf`) :
+Dockerfile :
+
+```
+FROM debian
+
+RUN apt update -y
+
+RUN apt install -y apache2
+
+COPY apache2.conf /etc/apache2/apache2.conf
+
+COPY index.html /var/www/html/index.html
+
+ADD . /etc/apache2/logs/
+
+CMD [ "apache2", "-D", "FOREGROUND" ]
+```
+
+➜ Fichier de conf pour Apache (à positionner dans `/etc/apache2/apache2.conf`) :
 
 ```apache2
 # on définit un port sur lequel écouter
@@ -281,9 +299,17 @@ DocumentRoot "/var/www/html/"
 # quelques paramètres pour les logs
 ErrorLog "logs/error.log"
 LogLevel warn
+
+ServerName 10.104.1.2
 ```
 
-➜ Et aussi, la commande pour lancer Apache à la main sur un système Debian c'est : `apache2 -DFOREGROUND`.
+Création de l'image et lancement d'une instance :
+
+```
+docker build . -t apache
+docker run -p 8888:80 apache
+```
+
 
 📁 **`Dockerfile`**
 
@@ -366,5 +392,11 @@ Peu importe le langage aussi ! Go, Python, PHP (désolé des gros mots), Node (j
   - le `cd` dans le bon dossier
   - la commande `docker build` pour build l'image
   - la commande `docker-compose` pour lancer le(s) conteneur(s)
+
+Dockerfile : ![Dockerfile](./app/Dockerfile)
+
+```
+docker run -p 10.104.1.2:8888:8080 go
+```
 
 📁 📁 `app/Dockerfile` et `app/docker-compose.yml`. Je veux un sous-dossier `app/` sur votre dépôt git avec ces deux fichiers dedans :)
